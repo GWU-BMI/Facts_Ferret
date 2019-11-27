@@ -1,0 +1,34 @@
+<configuration>
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+    </encoder>
+  </appender>
+  
+  <!-- Log to file any messages from a logger named QUERYLOG -->
+  <appender name="QUERYLOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>log/query.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>query.log.%d{yyyy-MM}.%i.zip</fileNamePattern>
+      <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+        <maxFileSize>100MB</maxFileSize>
+      </timeBasedFileNamingAndTriggeringPolicy>
+    </rollingPolicy>
+    <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+      <evaluator>
+        <expression>return marker != null &amp;&amp; "QUERYLOG".equals(marker.getName());</expression>
+      </evaluator>
+    </filter>
+    <encoder>
+      <pattern>%msg%n</pattern>
+    </encoder>
+  </appender>
+  
+  <logger name="gov.va.research.ir.model.SearchWorker" level="INFO">
+    <appender-ref ref="QUERYLOG" />
+  </logger>
+  
+  <root level="INFO">
+    <appender-ref ref="STDOUT" />
+  </root>
+</configuration>

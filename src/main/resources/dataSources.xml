@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<!--	<bean id="dataSourceHealthFacts" class="org.apache.commons.dbcp.BasicDataSource"-->
+	<!--		destroy-method="close" lazy-init="true">-->
+	<!--		<property name="driverClassName" value="org.mariadb.jdbc.Driver" />-->
+	<!--		<property name="url" value="jdbc:mariadb://ctsi.smhs.gwu.edu/hfx?user=hfx&amp;password=PW57hVBtU27LB2Q2" />-->
+	<!--		<property name="maxActive" value="15" />-->
+	<!--		<property name="maxWait" value="1" />-->
+	<!--	</bean>-->
+
+ <!--&lt;!&ndash;OLD Postgres &ndash;&gt;-->
+	<!--<bean id="dataSourceHealthFacts" class="org.apache.commons.dbcp.BasicDataSource"-->
+		  <!--destroy-method="close" lazy-init="true">-->
+		<!--<property name="driverClassName" value="org.postgresql.Driver" />-->
+		<!--<property name="url" value="jdbc:postgresql://128.164.120.34/hf?user=postgres&amp;password=nlprules" />-->
+		<!--<property name="maxActive" value="15" />-->
+		<!--<property name="maxWait" value="1" />-->
+	<!--</bean>-->
+
+
+	<!-- NEW Postgres -->
+	<bean id="dataSourceHealthFacts" class="org.apache.commons.dbcp.BasicDataSource"
+		  destroy-method="close" lazy-init="true">
+		<property name="driverClassName" value="org.postgresql.Driver" />
+		<property name="url" value="jdbc:postgresql://ctsi.smhs.gwu.edu/hf?user=postgres&amp;password=JhZ[9k)0}U.&lt;OWYOqD&amp;ssl=true&amp;sslfactory=org.postgresql.ssl.NonValidatingFactory" />
+		<property name="maxActive" value="15" />
+		<property name="maxWait" value="1" />
+	</bean>
+
+
+
+    <!-- MariaDB -->
+	<!--<bean id="dataSourceHealthFacts" class="org.apache.commons.dbcp.BasicDataSource"-->
+	<!--destroy-method="close" lazy-init="true">-->
+	<!--<property name="driverClassName" value="org.mariadb.jdbc.Driver" />-->
+	<!--<property name="url" value="jdbc:mariadb://ctsi.smhs.gwu.edu/hfx?user=hfx&amp;password=PW57hVBtU27LB2Q2" />-->
+	<!--<property name="maxActive" value="15" />-->
+	<!--<property name="maxWait" value="1" />-->
+	<!--</bean>-->
+
+	<bean id="DaoHealthFacts" class="gov.va.research.ir.model.DAOHealthFacts" lazy-init="true">
+		<property name="dataSource" ref="dataSourceHealthFacts" />
+		<property name="displayName" value="Health Facts" />
+		<property name="queryTimeoutMinutes" value="240" />
+	</bean>
+
+	<bean id="DAOs" class="java.util.ArrayList" lazy-init="true">
+		<constructor-arg>
+			<list>
+				<ref bean="DaoHealthFacts" />
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<!--<bean id="QueryExpander" class="gov.va.research.ir.model.QueryExpander" lazy-init="true">-->
+		<!--<property name="baseAddress" value="http://vhacdwnapp01:8080" />-->
+		<!--<property name="path" value="/queryExpansion/ex/synonyms/10" />-->
+	<!--</bean>-->
+
+	<!-- for Query Recommendation      -->
+	<bean id="QueryExpander" class="gov.va.research.ir.model.QueryExpander" lazy-init="true">
+		<property name="baseAddress" value="http://qtzeng.smhs.gwu.edu:8080" />
+		<property name="path" value="/queryExpansion/ex/topics/10" />
+	</bean>
+
+</beans>
